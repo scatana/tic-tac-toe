@@ -4,9 +4,7 @@ window.onload = () => {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js');
   }
-}
 
-(function () {
   const MAX_TURNS = 9;
   const WINNING_COMBOS = [ 7, 56, 448, 73, 146, 292, 273, 84 ]; // bit masks
   const HINTS = document.getElementById('hints');
@@ -89,4 +87,4 @@ window.onload = () => {
       cell.style.backgroundColor = 'transparent';
     }
   }
-})();
+}
