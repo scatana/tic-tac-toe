@@ -61,7 +61,7 @@ window.onload = () => {
           }
         }
 
-        break;
+        return;
       }
     }
 
