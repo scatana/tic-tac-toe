@@ -2,6 +2,7 @@ const cacheName = 'tic-tac-toe';
 const filesToCache = [
   '/',
   '/index.html',
+  '/favicon.ico',
   '/css/style.css',
   '/js/main.js'
 ];
