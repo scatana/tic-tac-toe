@@ -8,18 +8,13 @@ window.onload = () => {
   const MAX_TURNS = 9;
   const WINNING_COMBOS = [ 7, 56, 448, 73, 146, 292, 273, 84 ]; // bit masks
   const HINTS = document.getElementById('hints');
-  const GRID = document.getElementById('grid');
-  const CELLS = GRID.getElementsByTagName('div');
-  const OVERLAY = document.getElementById('overlay');
   const BUTTON = document.getElementById('new-game');
+  const CELLS = document.getElementById('grid').getElementsByTagName('div');
 
   let currentPlayer, turnNo, moves, gameHasEnded;
 
   setup();
 
-  GRID.addEventListener('click', e => {
-    !gameHasEnded && takeTurn(e);
-  });
   BUTTON.addEventListener('click', setup);
 
   function takeTurn(e) {
@@ -27,8 +22,15 @@ window.onload = () => {
     const cellIndex = parseInt(cell.dataset.index, 10);
     const currentMove = 1 << cellIndex;
 
+    e.preventDefault();
+    e.stopPropagation();
+
+    cell.style.backgroundColor = 'transparent';
+    cell.removeEventListener('mouseup', takeTurn, true);
+    cell.removeEventListener('touchend', takeTurn, true);
+
     // Only consider unplayed cells
-    if (!cell.innerHTML) {
+    if (!cell.innerHTML && !gameHasEnded) {
       cell.innerHTML = currentPlayer;
       moves[currentPlayer] |= currentMove;
 
@@ -71,6 +73,17 @@ window.onload = () => {
     }
   }
 
+  function highlightCell(e) {
+    const cell = e.target;
+
+    if (!gameHasEnded) {
+      cell.style.backgroundColor = 'rgba(255, 255, 255, .15)';
+    }
+
+    cell.removeEventListener('mousedown', highlightCell, true);
+    cell.removeEventListener('touchstart', highlightCell, true);
+  }
+
   function setup() {
     currentPlayer = 'X';
     turnNo = 1;
@@ -85,6 +98,14 @@ window.onload = () => {
     for (let cell of CELLS) {
       cell.innerHTML = '';
       cell.style.backgroundColor = 'transparent';
+      cell.removeEventListener('mousedown', highlightCell, true);
+      cell.removeEventListener('touchstart', highlightCell, true);
+      cell.removeEventListener('mouseup', takeTurn, true);
+      cell.removeEventListener('touchend', takeTurn, true);
+      cell.addEventListener('mousedown', highlightCell, true);
+      cell.addEventListener('touchstart', highlightCell, true);
+      cell.addEventListener('mouseup', takeTurn, true);
+      cell.addEventListener('touchend', takeTurn, true);
     }
   }
 }
