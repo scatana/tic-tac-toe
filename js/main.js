@@ -9,13 +9,19 @@ window.onload = () => {
   const WINNING_COMBOS = [ 7, 56, 448, 73, 146, 292, 273, 84 ]; // bit masks
   const HINTS = document.getElementById('hints');
   const BUTTON = document.getElementById('new-game');
-  const CELLS = document.getElementById('grid').getElementsByTagName('div');
+  const GRID = document.getElementById('grid');
+  const CELLS = GRID.getElementsByTagName('div');
 
   let currentPlayer, turnNo, moves, gameHasEnded;
 
-  setup();
+  BUTTON.addEventListener('mouseup', setup);
+  BUTTON.addEventListener('touchend', setup);
+  GRID.addEventListener('mousedown', highlightCell);
+  GRID.addEventListener('touchstart', highlightCell);
+  GRID.addEventListener('mouseup', takeTurn);
+  GRID.addEventListener('touchend', takeTurn);
 
-  BUTTON.addEventListener('click', setup);
+  setup();
 
   function takeTurn(e) {
     const cell = e.target;
@@ -25,25 +31,25 @@ window.onload = () => {
     e.preventDefault();
     e.stopPropagation();
 
-    cell.style.backgroundColor = 'transparent';
-    cell.removeEventListener('mouseup', takeTurn, true);
-    cell.removeEventListener('touchend', takeTurn, true);
+    if (!gameHasEnded) {
+      cell.style.backgroundColor = 'transparent';
 
-    // Only consider unplayed cells
-    if (!cell.innerHTML && !gameHasEnded) {
-      cell.innerHTML = currentPlayer;
-      moves[currentPlayer] |= currentMove;
+      // Only consider unplayed cells
+      if (!cell.innerHTML) {
+        cell.innerHTML = currentPlayer;
+        moves[currentPlayer] |= currentMove;
 
-      // There is no point in checking for win conditions before
-      // turn 5 because there are not enough moves for winning
-      if (turnNo > 4) {
-        checkWinCondition(currentPlayer)
-      }
+        // There is no point in checking for win conditions before
+        // turn 5 because there are not enough moves for winning
+        if (turnNo > 4) {
+          checkWinCondition(currentPlayer);
+        }
 
-      if (!gameHasEnded) {
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        HINTS.innerText = `Next move: ${currentPlayer}`;
-        turnNo++;
+        if (!gameHasEnded) {
+          currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+          HINTS.innerText = `Next move: ${currentPlayer}`;
+          turnNo++;
+        }
       }
     }
   }
@@ -74,14 +80,9 @@ window.onload = () => {
   }
 
   function highlightCell(e) {
-    const cell = e.target;
-
     if (!gameHasEnded) {
-      cell.style.backgroundColor = 'rgba(255, 255, 255, .15)';
+      e.target.style.backgroundColor = 'rgba(255, 255, 255, .15)';
     }
-
-    cell.removeEventListener('mousedown', highlightCell, true);
-    cell.removeEventListener('touchstart', highlightCell, true);
   }
 
   function setup() {
@@ -98,14 +99,6 @@ window.onload = () => {
     for (let cell of CELLS) {
       cell.innerHTML = '';
       cell.style.backgroundColor = 'transparent';
-      cell.removeEventListener('mousedown', highlightCell, true);
-      cell.removeEventListener('touchstart', highlightCell, true);
-      cell.removeEventListener('mouseup', takeTurn, true);
-      cell.removeEventListener('touchend', takeTurn, true);
-      cell.addEventListener('mousedown', highlightCell, true);
-      cell.addEventListener('touchstart', highlightCell, true);
-      cell.addEventListener('mouseup', takeTurn, true);
-      cell.addEventListener('touchend', takeTurn, true);
     }
   }
 }
