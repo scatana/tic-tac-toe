@@ -23,6 +23,7 @@ window.onload = () => {
 
   setup();
 
+  // Manages a player's turn
   function takeTurn(e) {
     const cell = e.target;
     const cellIndex = parseInt(cell.dataset.index, 10);
@@ -54,6 +55,8 @@ window.onload = () => {
     }
   }
 
+  // Verifies whether a player has won the game or maybe the game
+  // ended in a tie
   function checkWinCondition(player) {
     for (let combo of WINNING_COMBOS) {
       if (combo === (combo & moves[player])) {
@@ -79,12 +82,14 @@ window.onload = () => {
     }
   }
 
+  // Highlights the active cell when the player interacts with it
   function highlightCell(e) {
     if (!gameHasEnded) {
       e.target.style.backgroundColor = 'rgba(255, 255, 255, .15)';
     }
   }
 
+  // Sets things up (also works as a reset at the beginning of the next game)
   function setup() {
     currentPlayer = 'X';
     turnNo = 1;
