@@ -84,8 +84,10 @@ window.onload = () => {
 
   // Highlights the active cell when the player interacts with it
   function highlightCell(e) {
-    if (!gameHasEnded) {
-      e.target.style.backgroundColor = 'rgba(255, 255, 255, .15)';
+    const cell = e.target;
+
+    if (!gameHasEnded && !cell.innerHTML) {
+      cell.style.backgroundColor = 'rgba(255, 255, 255, .15)';
     }
   }
 
