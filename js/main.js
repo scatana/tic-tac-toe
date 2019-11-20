@@ -60,7 +60,7 @@ window.onload = () => {
   function checkWinCondition(player) {
     for (let combo of WINNING_COMBOS) {
       if (combo === (combo & moves[player])) {
-        HINTS.innerText = player + ' won!';
+        HINTS.innerText = player + ' wins!';
         gameHasEnded = true;
 
         // Highlight the winning combination
