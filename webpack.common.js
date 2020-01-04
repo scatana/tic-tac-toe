@@ -4,7 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const INPUT_DIR = path.resolve(__dirname, 'src');
-const OUTPUT_DIR = path.resolve(__dirname, 'public');
+const OUTPUT_DIR = path.resolve(__dirname, 'dist');
 
 module.exports = {
   context: INPUT_DIR,
