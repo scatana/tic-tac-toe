@@ -22,5 +22,5 @@ jobs:
       run: npm run build
     - uses: actions/upload-artifact@v1
       with:
-        name: tic-tac-toe_$SHA8
+        name: tic-tac-toe_${SHA8}
         path: dist
