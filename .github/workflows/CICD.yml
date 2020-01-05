@@ -20,5 +20,5 @@ jobs:
       run: npm run build
     - uses: actions/upload-artifact@v1
       with:
-        name: tic-tac-toe_${{github.sha}}
+        name: {{github.repository}}
         path: dist
