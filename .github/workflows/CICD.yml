@@ -18,7 +18,7 @@ jobs:
       run: |
         npm ci
         npm run build
-        echo ${{github.sha}} > dist/sha.txt
+        echo ${{format('{0}:{1}', github.ref, github.sha)}} > dist/version.txt
     - uses: actions/upload-artifact@v1
       with:
         name: ${{format('tic-tac-toe-{0}', github.sha)}}
