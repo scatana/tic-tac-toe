@@ -20,12 +20,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './index.html'
     }),
-    new CopyPlugin([
-      'favicon.ico',
-      'manifest.json',
-      'service-worker.js',
-      { from: 'css', to: 'css' },
-      { from: 'images', to: 'images' }
-    ])
+    new CopyPlugin({
+      patterns: [
+        'favicon.ico',
+        'manifest.json',
+        'service-worker.js',
+        { from: 'css', to: 'css' },
+        { from: 'images', to: 'images' }
+      ]
+    })
   ]
 }
